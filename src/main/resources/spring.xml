@@ -1,4 +1,3 @@
-
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -16,12 +15,19 @@
 
     <!-- Activer les annotations Spring MVC -->
     <mvc:annotation-driven/>
-    
-    <bean id="publisherRepository"
-          class="ma.youcode.click.repository.imp.PublisherRepositoryImpl"/>
 
+    <bean id="publisherRepository" 
+        class="ma.youcode.click.repository.imp.PublisherRepositoryImpl"/>
     <bean id="publisherService"
           class="ma.youcode.click.service.PublisherService">
+        <constructor-arg ref="publisherRepository"/>
+    </bean>
+
+    <bean id="repository" 
+        class="ma.youcode.click.repository.imp.LienRepositoryImpl"/>
+    <bean id="lienService"
+             class="ma.youcode.click.service.LienService">
+        <constructor-arg ref="repository"/>
         <constructor-arg ref="publisherRepository"/>
     </bean>
 
