@@ -15,6 +15,8 @@ public class Publisher {
         this.categorie = categorie;
     }
 
+    public Publisher(){}
+
     public int getId() {return id;}
     public String getNom() {return nom;}
     public String getPrenom() {return prenom;}
