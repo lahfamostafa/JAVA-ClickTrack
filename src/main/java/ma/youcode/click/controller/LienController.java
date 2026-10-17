@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ma.youcode.click.RequestDto;
+import ma.youcode.click.dto.OffreDto;
+import ma.youcode.click.dto.RequestDto;
 import ma.youcode.click.entity.Lien;
 import ma.youcode.click.service.*;
 
 @RestController 
-@RequestMapping("api/publishers/{id}")
+@RequestMapping("api/publishers")
 public class LienController {
 
     private final LienService lienService;
@@ -24,10 +25,10 @@ public class LienController {
         this.lienService = lienService;
     }
 
-    // @GetMapping 
-    // public ResponseEntity<List<Lien>> findAll(){
-    //     return ResponseEntity.ok(lienService.findAll());
-    // }
+    @GetMapping("/liens")
+    public ResponseEntity<List<Lien>> findAll(){
+        return ResponseEntity.ok(lienService.findAll());
+    }
     
     // @GetMapping("/lien/{id}")
     // public ResponseEntity<Lien> findById(@PathVariable("id") int id){
@@ -36,13 +37,19 @@ public class LienController {
     //     return lien.map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
     // }
 
-    @GetMapping("/liens")
+    @GetMapping("/{id}/offres")
+    public ResponseEntity<List<OffreDto>> getOffresForPublisher(@PathVariable("id")int publisherId){
+        List<OffreDto> liens = lienService.getOffresForPublisher(publisherId);
+        return ResponseEntity.ok(liens);
+    }
+
+    @GetMapping("/{id}/liens")
     public ResponseEntity<List<Lien>> getLiensForPublisher(@PathVariable("id") int publisherId){
         List<Lien> liens = lienService.getLiensForPublisher(publisherId);
         return ResponseEntity.ok(liens);
     }
 
-    @PostMapping("/liens")
+    @PostMapping("/{id}/liens")
     public ResponseEntity<Lien> createLien(@PathVariable("id") int publisherId , @RequestBody RequestDto reqDto){
         Lien lien = lienService.save(reqDto , publisherId);
         return ResponseEntity.status(HttpStatus.CREATED).body(lien);
