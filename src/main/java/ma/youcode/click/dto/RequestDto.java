@@ -1,4 +1,4 @@
-package ma.youcode.click;
+package ma.youcode.click.dto;
 
 public class RequestDto {
     private String offre;
