@@ -2,8 +2,11 @@ package ma.youcode.click.repository.imp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import ma.youcode.click.dto.OffreDto;
 import ma.youcode.click.entity.Lien;
 import ma.youcode.click.entity.Publisher;
 import ma.youcode.click.repository.*;
@@ -27,8 +30,18 @@ public class LienRepositoryImpl implements LienRepository {
     }
 
     @Override
-    public List<Lien> getLiensForOffres(String offre) {
-        return liens.stream().filter(o->o.getOffre().equals(offre)).toList();
+    public List<OffreDto> getOffresForPublisher(int publisherId) {
+        Map<String,List<Lien>> map = liens.stream().filter(lien-> lien.getPublisher().getId() == publisherId).collect(Collectors.groupingBy(Lien::getOffre));
+        List<OffreDto> offreDtos = new ArrayList<>();
+        for (Map.Entry<String,List<Lien>> m : map.entrySet()) {
+            String offre = m.getKey();
+            List<Lien> liensOffre = m.getValue();
+            Long nombreLiens = (long)liensOffre.size();
+            int clicks = liensOffre.stream().mapToInt(Lien::getClicks).sum();
+            offreDtos.add(new OffreDto(offre, nombreLiens, clicks));
+        }
+
+        return offreDtos;
     }
 
     @Override
