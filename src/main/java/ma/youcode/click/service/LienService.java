@@ -3,7 +3,8 @@ package ma.youcode.click.service;
 import java.util.List;
 import java.util.Optional;
 
-import ma.youcode.click.RequestDto;
+import ma.youcode.click.dto.OffreDto;
+import ma.youcode.click.dto.RequestDto;
 import ma.youcode.click.entity.Lien;
 import ma.youcode.click.entity.Publisher;
 import ma.youcode.click.repository.LienRepository;
@@ -39,8 +40,8 @@ public class LienService {
         return repository.getLiensForPublisher(publisher.get());
     }
 
-    public List<Lien> getLiensForOffres(String offre) {
-        return repository.getLiensForOffres(offre);
+    public List<OffreDto> getOffresForPublisher(int publisherId) {
+        return repository.getOffresForPublisher(publisherId);
     }
 
     public Optional<Lien> findById(int id) {
