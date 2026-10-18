@@ -3,6 +3,7 @@ package ma.youcode.click.service;
 import java.util.List;
 import java.util.Optional;
 
+import ma.youcode.click.dto.ClickDto;
 import ma.youcode.click.dto.OffreDto;
 import ma.youcode.click.dto.RequestDto;
 import ma.youcode.click.entity.Lien;
@@ -29,11 +30,11 @@ public class LienService {
         return repository.save(lien);
     }
 
-    public List<Lien> findAll(){
+    public List<ClickDto> findAll(){
         return repository.findAll();
     }
 
-    public List<Lien> getLiensForPublisher(int publisherId){
+    public List<ClickDto> getLiensForPublisher(int publisherId){
         Optional<Publisher> publisher = publisherRepository.findById(publisherId);
         if(publisher.isEmpty())return List.of();
 
@@ -46,5 +47,9 @@ public class LienService {
 
     public Optional<Lien> findById(int id) {
         return repository.findById(id);
+    }
+
+    public Optional<Lien> incrementer(int lienId){
+        return repository.incremente(lienId);
     }
 }
