@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import ma.youcode.click.dto.ClickDto;
 import ma.youcode.click.dto.OffreDto;
 import ma.youcode.click.entity.Lien;
 import ma.youcode.click.entity.Publisher;
@@ -25,8 +26,16 @@ public class LienRepositoryImpl implements LienRepository {
     }
 
     @Override
-    public List<Lien> getLiensForPublisher(Publisher publisher) {
-        return liens.stream().filter(p->p.getPublisher().getId() == publisher.getId()).toList();
+    public List<ClickDto> getLiensForPublisher(Publisher publisher) {
+        return liens.stream()
+        .filter(p->p.getPublisher().getId() == publisher.getId())
+        .map(lien -> new ClickDto(
+            lien.getId(), 
+            lien.getUrlDestination(), 
+            (long)lien.getClicks(), 
+            lien.getPublisher().getNom()+" "+lien.getPublisher().getPrenom(), 
+            "t/"+lien.getId()))
+        .toList();
     }
 
     @Override
@@ -50,8 +59,23 @@ public class LienRepositoryImpl implements LienRepository {
     }
 
     @Override
-    public List<Lien> findAll() {
-        return liens;
+    public List<ClickDto> findAll() {
+        return liens.stream()
+            .map(lien -> new ClickDto(
+                lien.getId(), 
+                lien.getUrlDestination(), 
+                (long)lien.getClicks(), 
+                lien.getPublisher().getNom()+" "+lien.getPublisher().getPrenom(), 
+                "t/"+lien.getId()))
+            .toList();
+    }
+
+    @Override
+    public Optional<Lien> incremente(int lienId) {
+        Optional<Lien> lien = liens.stream().filter(link -> link.getId() == lienId).findFirst();
+        int cliks = lien.get().getClicks();
+        lien.get().setClicks(++cliks);
+        return lien;
     }
     
 }
